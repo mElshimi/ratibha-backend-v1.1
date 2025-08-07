@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const clearTodayTasks = require("../utils/clearTasks");
 
-router.get("/run-clear", async (req, res) => {
+router.post("/run-clear", async (req, res) => {
   try {
     await clearTodayTasks();
     res
