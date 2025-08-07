@@ -4,21 +4,26 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cron = require("node-cron");
 const clearTodayTasks = require("./utils/clearTasks");
-const moment = require('moment-timezone');
-const cairoNow = moment().tz('Africa/Cairo').toDate();
+const moment = require("moment-timezone");
+const cairoNow = moment().tz("Africa/Cairo").toDate();
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/subjects", require("./routes/subjects"));
 
 // جدولة حذف التاسكات في نهاية اليوم (منتصف الليل)
-cron.schedule('0 0 * * *', async () => {
-  await clearTodayTasks();
-}, {
-  timezone: "Africa/Cairo"
-});
+cron.schedule(
+  "0 0 * * *",
+  async () => {
+    await clearTodayTasks();
+  },
+  {
+    timezone: "Africa/Cairo",
+  }
+);
 
 // Routes
+app.use("/api/cron", require("./routes/cron"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/lessons", require("./routes/lessons"));
 app.use("/api/tasks", require("./routes/tasks"));
