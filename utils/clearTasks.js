@@ -3,6 +3,7 @@ const Archive = require('../models/Archive');
 const Study = require('../models/Study');
 const StudyArchive = require('../models/StudyArchive');
 const cron = require('node-cron');
+const moment = require('moment-timezone');
 
 // دالة لمسح وأرشفة التاسكات وجدول المذاكرة في نهاية اليوم
 async function clearTodayData() {
@@ -16,7 +17,7 @@ async function clearTodayData() {
       title: t.title,
       date: t.date,
       done: t.done,
-      archivedAt: new Date()
+      archivedAt: moment().tz('Africa/Cairo').toDate()
     })));
     await Task.deleteMany({ date: today });
     console.log('تم أرشفة وحذف كل التاسكات الخاصة بنهاية اليوم:', today);
@@ -30,7 +31,7 @@ async function clearTodayData() {
       subject: s.subject,
       date: s.date,
       duration: s.duration,
-      archivedAt: new Date()
+      archivedAt: moment().tz('Africa/Cairo').toDate()
     })));
     await Study.deleteMany({ date: today });
     console.log('تم أرشفة وحذف كل المذاكرات الخاصة بنهاية اليوم:', today);
