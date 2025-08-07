@@ -2,12 +2,13 @@ const Task = require('../models/Task');
 const Archive = require('../models/Archive');
 const Study = require('../models/Study');
 const StudyArchive = require('../models/StudyArchive');
-const cron = require('node-cron');
+
 const moment = require('moment-timezone');
 
 // دالة لمسح وأرشفة التاسكات وجدول المذاكرة في نهاية اليوم
 async function clearTodayData() {
-  const today = new Date().toISOString().slice(0, 10);
+const today = moment().tz('Africa/Cairo').format('YYYY-MM-DD');
+
 
   // أرشفة وحذف التاسكات
   const tasks = await Task.find({ date: today });
@@ -39,7 +40,3 @@ async function clearTodayData() {
 }
 
 module.exports = clearTodayData;
-// const clearTodayData = require('./utils/clearTasks');
-// cron.schedule('0 0 * * *', async () => {
-//   await clearTodayData();
-// });
